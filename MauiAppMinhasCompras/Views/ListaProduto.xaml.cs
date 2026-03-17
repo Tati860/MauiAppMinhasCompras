@@ -64,7 +64,7 @@ public partial class ListaProduto : ContentPage
     private void ToolbarItem_Clicked_1(object sender, EventArgs e)
     {
 		double soma = Lista.Sum(i => i.Total);
-		string msg = $"O total é{soma:C2}";
+		string msg = $"O total é {soma:C2}";
 		DisplayAlert("Total dos produtos", msg, "OK");
 
     }
