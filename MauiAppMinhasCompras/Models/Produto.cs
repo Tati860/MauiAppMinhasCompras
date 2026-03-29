@@ -21,9 +21,11 @@ namespace MauiAppMinhasCompras.Models
         }
         public double Quantidade { get; set; }
         public double Preco { get; set; }
-        public double Total { get => Quantidade * Preco; }
+        public double Total { get { return Quantidade * Preco; } }
+        public string Categoria { get; set; }
 
 
-
+       public double ProdutoTotal => Quantidade * Preco;
     }
+    
 }

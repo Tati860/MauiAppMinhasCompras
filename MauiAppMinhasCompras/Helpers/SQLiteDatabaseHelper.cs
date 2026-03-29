@@ -1,6 +1,6 @@
-﻿using MauiAppMinhasCompras.Models;
+﻿
+using MauiAppMinhasCompras.Models;
 using SQLite;
-
 
 namespace MauiAppMinhasCompras.Helpers
 {
@@ -12,38 +12,28 @@ namespace MauiAppMinhasCompras.Helpers
         {
             _conn = new SQLiteAsyncConnection(path);
             _conn.CreateTableAsync<Produto>().Wait();
+        }
 
-        }
-        public Task<int> Insert(Produto p)
-        {
-            return _conn.InsertAsync(p);
-        
-        }
-        public Task<List<Produto>> Update(Produto p)
-        {
-            string sql = "UPDATE Produto Set Descricao=?, Quantidade=?, Preco=? WHERE Id=?";
-            return _conn.QueryAsync<Produto>(
-                sql, p.Descricao, p.Quantidade, p.Preco, p.Id
-                );
-                
-        }
+        public Task<int> Insert(Produto p) =>
+            _conn.InsertAsync(p);
+
+        public Task<int> Update(Produto p)
+            => _conn.UpdateAsync(p);
+
+
         public Task<int> Delete(int id)
-        {
-            return _conn.Table<Produto>().DeleteAsync(i => i.Id == id);
+            => _conn.DeleteAsync<Produto>(id);
 
-        }
         public Task<List<Produto>> GetAll()
-        {
-            return _conn.Table<Produto>().ToListAsync();
-        }
+            => _conn.Table<Produto>().ToListAsync();
+       
+
         public Task<List<Produto>> Search(string q)
         {
-            string sql = "SELECT * FROM Produto  WHERE descricao LIKE '%" + q + "%'";
-            return _conn.QueryAsync<Produto>(sql);
-                
 
+            return _conn.Table<Produto>()
+                .Where(i => i.Descricao.Contains(q)).ToListAsync();
         }
+    } // Fecha classe SQLiteDatabaseHelper
+} // Fecha namespace MauiAppMinhasCompras.Helpers
 
-
-    }
-}
